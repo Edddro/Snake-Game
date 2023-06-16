@@ -248,16 +248,11 @@ def menu():
   screen.blit(score_text, (background_rect.centerx - 50, background_rect.centery - 5))
   screen.blit(pygame.transform.scale(trophy_img, (50, 50)), (background_rect.centerx + 30, background_rect.centery - 60))
   screen.blit(high_score_text, (background_rect.centerx + 50, background_rect.centery - 5))
-  
 
   # Creates a button
   pygame.draw.rect(screen, BLUE, (background_rect.x, background_rect.height + background_rect.y + 5, background_rect.width, 50))
   button_text = font.render("Play", True, WHITE)
   screen.blit(button_text, (background_rect.centerx, background_rect.height + background_rect.y + 20))
-
-  # Sets the default value of the snake with the snake facing right (resets the snake every game)
-  snake = [(3, 7), (2, 7), (1, 7)]
-  snake_direction = "right"
 
   # Update screen
   pygame.display.update()
@@ -323,6 +318,10 @@ while True:
         
         # Resets the apple score
         score = 0
+
+      # Sets the default value of the snake with the snake facing right (resets the snake every game)
+      snake = [(3, 7), (2, 7), (1, 7)]
+      snake_direction = "right"
         
   # Displays the appropriate scene           
   if scene == "game over":
