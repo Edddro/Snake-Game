@@ -14,10 +14,10 @@ import random
 pygame.init()
 
 # Creates a full screen game window and change the display name and icon
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Snake Game | ISC2O ISU")
 icon = pygame.image.load("./Graphics/head_right.png")
 pygame.display.set_icon(icon)
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 # Creates two CONSTANT variables, height and width, which receive values from the full screen size
 WIDTH = screen.get_width()
@@ -46,6 +46,11 @@ trophy_img = pygame.transform.scale(pygame.image.load("./Graphics/trophy.png").c
 
 # Defines the background image for the menu screen
 background_img = pygame.image.load("./Graphics/background.jpg").convert_alpha()
+
+# Defines the images used for the game modes and resizes them to 45 x 50
+easy_mode_img = pygame.transform.scale(pygame.image.load("./Graphics/easy_mode.png").convert_alpha(), (45, 50))
+hard_mode_img = pygame.transform.scale(pygame.image.load("./Graphics/hard_mode.png").convert_alpha(), (45, 50))
+random_mode_img = pygame.transform.scale(pygame.image.load("./Graphics/random_mode.png").convert_alpha(), (45, 50))
 
 # Defines the font used in the game with a size of 30
 font = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 30)
@@ -89,8 +94,8 @@ def apple():
   global prev_apple_x, prev_apple_y
   
   # Randomizes the values for x and y when the function is called, and places it in the center of the tile
-  x = ((random.randint(70, WIDTH - 70) // 35) * 35) + 2
-  y = ((random.randint(105, HEIGHT - 70) // 35) * 35) + 2
+  x = ((random.randint(35, WIDTH - 35) // 35) * 35) + 2
+  y = ((random.randint(70, HEIGHT - 35) // 35) * 35) + 2
 
   # Checks if the apple is in the same position as the previous apple (to lower the chances of spawning inside the snake)
   while (x, y) == (prev_apple_x, prev_apple_y):
@@ -313,9 +318,9 @@ def move_snake():
 
 # Creates a function to display a menu screen
 def menu():
-  # Allows changes to scene, snake, snake_direction, and background_rect to be accessed outside the function
+  # Allows changes to scene, snake, snake_direction, background_rect, and mode to be accessed outside the function
   global scene, snake, snake_direction, background_rect
-
+  
   # Calls the background function
   background()
   
@@ -332,10 +337,28 @@ def menu():
   screen.blit(pygame.transform.scale(trophy_img, (50, 50)), (background_rect.centerx + 30, background_rect.centery - 60))
   screen.blit(high_score_text, (background_rect.centerx + 50, background_rect.centery - 5))
 
-  # Creates a button
-  pygame.draw.rect(screen, BLUE, (background_rect.x, background_rect.height + background_rect.y + 5, background_rect.width, 50))
-  button_text = font.render("Play", True, WHITE)
-  screen.blit(button_text, (background_rect.centerx - 5, background_rect.height + background_rect.y + 20))
+  # Creates the play button
+  pygame.draw.rect(screen, BLUE, (background_rect.x, background_rect.height + background_rect.y + 5, background_rect.width - 50, 50))
+  play_text = font.render("Play", True, WHITE)
+  screen.blit(play_text, (background_rect.centerx - 35, background_rect.height + background_rect.y + 20))
+
+  # Creates the settings button
+  pygame.draw.rect(screen, BLUE, (background_rect.x + background_rect.width - 45, background_rect.height + background_rect.y + 5, 45, 50))
+
+  # If the mode is easy, display the easy mode image
+  if mode == "easy":
+    mode_image = easy_mode_img
+
+  # If the mode is hard, display the hard mode image
+  elif mode == "hard":
+    mode_image = hard_mode_img
+
+  # If the mode is random, display the random mode image
+  elif mode == "random":
+    mode_image = random_mode_img
+
+  # Display the mode image on the mode button (smaller rectangle to the right of the play button)
+  screen.blit(mode_image, (background_rect.x + background_rect.width - 45, background_rect.height + background_rect.y + 5))
 
   # Updates the display
   pygame.display.update()
@@ -360,6 +383,9 @@ apple_x, apple_y = apple()
 
 # Sets up the clock to control the game's speed
 clock = pygame.time.Clock()
+
+# Creates a variable, mode, which is set to easy on default (this is used to set the game mode)
+mode = "easy"
 
 # Starts the game loop
 while True:
@@ -405,8 +431,8 @@ while True:
     # Checks if the scene is menu and the mouse is clicked 
     elif event.type == pygame.MOUSEBUTTONDOWN and scene == "menu":
       
-      # Checks if the button is clicked (specifically, it checks if the coordinates of the click is within the coordinates of the rectangle)
-      if background_rect.x < event.pos[0] < background_rect.x + background_rect.width and background_rect.height + background_rect.y + 5 < event.pos[1] < background_rect.height + background_rect.y + 55:
+      # Checks if the play button is clicked (specifically, it checks if the coordinates of the click is within the coordinates of the rectangle)
+      if background_rect.x < event.pos[0] < background_rect.x + background_rect.width - 50 and background_rect.height + background_rect.y + 5 < event.pos[1] < background_rect.height + background_rect.y + 55:
         # Changes the display to the main game
         scene = "game"
         
@@ -416,7 +442,22 @@ while True:
         # Sets the default value of the snake with the snake facing right (resets the snake every game)
         snake = [(3, 7), (2, 7), (1, 7)]
         snake_direction = "right"
-        
+      
+      # Checks if the game mode button is clicked (specifically, it checks if the coordinates of the click is within the coordinates of the rectangle)
+      elif background_rect.x + background_rect.width - 45 < event.pos[0] < background_rect.x + background_rect.width and background_rect.height + background_rect.y + 5 < event.pos[1] < background_rect.height + background_rect.y + 50:
+
+        # If the mode is easy, change the mode to hard
+        if mode == "easy":
+          mode = "hard"
+
+        # If the mode is hard, change the mode to random
+        elif mode == "hard":
+          mode = "random"
+
+        # If the mode is random, change the mode to easy
+        elif mode == "random":
+          mode = "easy"
+  
   # Displays the appropriate scene on the user's screen based on the scene name           
   # Display the game over screen if the scene is "game over"
   if scene == "game over":
@@ -428,5 +469,14 @@ while True:
   elif scene == "game":
     move_snake()
 
-  # Set the game's speed to 10 frames per second
-  clock.tick(10)
+  # If the mode is easy, set the game's speed to 10 frames per second
+  if mode == "easy":
+    clock.tick(10)
+
+  # If the mode is hard, set the game's speed to 30 frames per second
+  if mode == "hard":
+    clock.tick(20)
+
+  # If the mode is random, set the game's speed to a random number between 10 and 30 frames per second
+  if mode == "random":
+    clock.tick(random.randint(10, 20))
