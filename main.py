@@ -40,10 +40,10 @@ trophy_img = pygame.transform.scale(pygame.image.load("./Graphics/trophy.png").c
 # Defines the background image for the menu screen
 background_img = pygame.image.load("./Graphics/background.jpg").convert_alpha()
 
-# Defines the images used for the game modes and resizes them to 45 x 50
-easy_mode_img = pygame.transform.scale(pygame.image.load("./Graphics/easy_mode.png").convert_alpha(), (45, 50))
-hard_mode_img = pygame.transform.scale(pygame.image.load("./Graphics/hard_mode.png").convert_alpha(), (45, 50))
-random_mode_img = pygame.transform.scale(pygame.image.load("./Graphics/random_mode.png").convert_alpha(), (45, 50))
+# Defines the images used for the game difficultys and resizes them to 45 x 50
+easy_difficulty_img = pygame.transform.scale(pygame.image.load("./Graphics/easy_difficulty.png").convert_alpha(), (45, 50))
+hard_difficulty_img = pygame.transform.scale(pygame.image.load("./Graphics/hard_difficulty.png").convert_alpha(), (45, 50))
+random_difficulty_img = pygame.transform.scale(pygame.image.load("./Graphics/random_difficulty.png").convert_alpha(), (45, 50))
 
 # Defines the font used in the game with a size of 30
 font = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 30)
@@ -311,7 +311,7 @@ def move_snake():
 
 # Creates a function to display a menu screen
 def menu():
-  # Allows changes to scene, snake, snake_direction, background_rect, and mode to be accessed outside the function
+  # Allows changes to scene, snake, snake_direction, background_rect, and difficulty to be accessed outside the function
   global scene, snake, snake_direction, background_rect
   
   # Calls the background function
@@ -338,20 +338,20 @@ def menu():
   # Creates the settings button
   pygame.draw.rect(screen, BLUE, (background_rect.x + background_rect.width - 45, background_rect.height + background_rect.y + 5, 45, 50))
 
-  # If the mode is easy, display the easy mode image
-  if mode == "easy":
-    mode_image = easy_mode_img
+  # If the difficulty is easy, display the easy difficulty image
+  if difficulty == "easy":
+    difficulty_image = easy_difficulty_img
 
-  # If the mode is hard, display the hard mode image
-  elif mode == "hard":
-    mode_image = hard_mode_img
+  # If the difficulty is hard, display the hard difficulty image
+  elif difficulty == "hard":
+    difficulty_image = hard_difficulty_img
 
-  # If the mode is random, display the random mode image
-  elif mode == "random":
-    mode_image = random_mode_img
+  # If the difficulty is random, display the random difficulty image
+  elif difficulty == "random":
+    difficulty_image = random_difficulty_img
 
-  # Display the mode image on the mode button (smaller rectangle to the right of the play button)
-  screen.blit(mode_image, (background_rect.x + background_rect.width - 45, background_rect.height + background_rect.y + 5))
+  # Display the difficulty image on the difficulty button (smaller rectangle to the right of the play button)
+  screen.blit(difficulty_image, (background_rect.x + background_rect.width - 45, background_rect.height + background_rect.y + 5))
 
   # Updates the display
   pygame.display.update()
@@ -377,8 +377,8 @@ apple_x, apple_y = apple()
 # Sets up the clock to control the game's speed
 clock = pygame.time.Clock()
 
-# Creates a variable, mode, which is set to easy on default (this is used to set the game mode)
-mode = "easy"
+# Creates a variable, difficulty, which is set to easy on default (this is used to set the game difficulty)
+difficulty = "easy"
 
 # Starts the game loop
 while True:
@@ -436,20 +436,20 @@ while True:
         snake = [(3, 7), (2, 7), (1, 7)]
         snake_direction = "right"
       
-      # Checks if the game mode button is clicked (specifically, it checks if the coordinates of the click is within the coordinates of the rectangle)
+      # Checks if the game difficulty button is clicked (specifically, it checks if the coordinates of the click is within the coordinates of the rectangle)
       elif background_rect.x + background_rect.width - 45 < event.pos[0] < background_rect.x + background_rect.width and background_rect.height + background_rect.y + 5 < event.pos[1] < background_rect.height + background_rect.y + 50:
 
-        # If the mode is easy, change the mode to hard
-        if mode == "easy":
-          mode = "hard"
+        # If the difficulty is easy, change the difficulty to hard
+        if difficulty == "easy":
+          difficulty = "hard"
 
-        # If the mode is hard, change the mode to random
-        elif mode == "hard":
-          mode = "random"
+        # If the difficulty is hard, change the difficulty to random
+        elif difficulty == "hard":
+          difficulty = "random"
 
-        # If the mode is random, change the mode to easy
-        elif mode == "random":
-          mode = "easy"
+        # If the difficulty is random, change the difficulty to easy
+        elif difficulty == "random":
+          difficulty = "easy"
   
   # Displays the appropriate scene on the user's screen based on the scene name           
   # Display the game over screen if the scene is "game over"
@@ -462,14 +462,14 @@ while True:
   elif scene == "game":
     move_snake()
 
-  # If the mode is easy, set the game's speed to 10 frames per second
-  if mode == "easy":
+  # If the difficulty is easy, set the game's speed to 10 frames per second
+  if difficulty == "easy":
     clock.tick(10)
 
-  # If the mode is hard, set the game's speed to 20 frames per second
-  if mode == "hard":
+  # If the difficulty is hard, set the game's speed to 20 frames per second
+  if difficulty == "hard":
     clock.tick(20)
 
-  # If the mode is random, set the game's speed to a random number between 10 and 20 frames per second
-  if mode == "random":
+  # If the difficulty is random, set the game's speed to a random number between 10 and 20 frames per second
+  if difficulty == "random":
     clock.tick(random.randint(10, 20))
