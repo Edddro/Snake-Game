@@ -94,8 +94,8 @@ def apple():
 
   # Checks if the apple is in the same position as the previous apple (to lower the chances of spawning inside the snake)
   while (x, y) == (prev_apple_x, prev_apple_y):
-    x = ((random.randint(70, WIDTH - 70) // 35) * 35) + 2
-    y = ((random.randint(105, HEIGHT - 70) //35) * 35) + 2
+    x = ((random.randint(35, WIDTH - 35) // 35) * 35) + 2
+    y = ((random.randint(70, HEIGHT - 35) // 35) * 35) + 2
 
   # Updates the value of prev_apple_x and prev_apple_y to the new position
   prev_apple_x, prev_apple_y = x, y  
@@ -232,23 +232,39 @@ def move_snake():
   if snake_direction == "right":
     new_head = (head_x + 1, head_y)
 
+    # If the head collides with the wall, move it 70 pixels right (off the user's screen)
+    if new_head[0] > (WIDTH - 35) // 35:
+      new_head = (head_x + 2, head_y)
+
   # If the snake is facing left, decrease head_x by one
   elif snake_direction == "left":
     new_head = (head_x - 1, head_y)
+
+    # If the head collides with the wall, move it 70 pixels left (off the user's screen)
+    if new_head[0] < 1:
+      new_head = (head_x - 2, head_y)
 
   # If the snake is facing up, decrease head_y by one
   elif snake_direction == "up":
     new_head = (head_x, head_y - 1)
 
+    # If the head collides with the wall, move it 105 pixels up (off the user's screen)
+    if new_head[1] < 1:
+      new_head = (head_x, head_y - 3)
+
   # If the snake is facing down, increase head_y by one
   elif snake_direction == "down":
     new_head = (head_x, head_y + 1)
+
+    # If the head collides with the wall, move it 70 pixels down (off the user's screen)
+    if new_head[1] > (HEIGHT - 70) // 35:
+      new_head = (head_x, head_y + 2)
 
   # Adds the new head to the beginning of the snake list
   snake.insert(0, new_head)
 
   # Checks if the snake collides with the wall
-  if new_head[0] <= 1 or new_head[0] >= (WIDTH - 35) // 35 or new_head[1] <= 1 or new_head[1] >= (HEIGHT - 70) // 35:
+  if new_head[0] < 1 or new_head[0] > (WIDTH - 35) // 35 or new_head[1] < 1 or new_head[1] >(HEIGHT - 70) // 35:
     # Plays the collision sound
     pygame.mixer.Sound("./Sounds/crash.mp3").play()
 
