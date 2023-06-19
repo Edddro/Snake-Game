@@ -1,10 +1,3 @@
-'''
-main.py
-Edward Drobnis
-June 19, 2023
-Snake Game - ISC2O ISU - Move the snake to consume the apples and grow as large as possible
-'''
-
 # Imports pygame, system, and random
 import pygame
 import sys
@@ -473,10 +466,10 @@ while True:
   if mode == "easy":
     clock.tick(10)
 
-  # If the mode is hard, set the game's speed to 30 frames per second
+  # If the mode is hard, set the game's speed to 20 frames per second
   if mode == "hard":
     clock.tick(20)
 
-  # If the mode is random, set the game's speed to a random number between 10 and 30 frames per second
+  # If the mode is random, set the game's speed to a random number between 10 and 20 frames per second
   if mode == "random":
     clock.tick(random.randint(10, 20))
