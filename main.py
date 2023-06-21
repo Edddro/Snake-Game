@@ -1,10 +1,3 @@
-'''
-main.py
-Edward Drobnis
-June 19, 2023
-Snake Game - ISC2O ISU - Move the snake to consume the apples and grow as large as possible
-'''
-
 # Imports pygame, system, and random
 import pygame
 import sys
