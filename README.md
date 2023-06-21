@@ -11,7 +11,7 @@ To run the game, run `python3 main.py`. This will execute the main code file, wh
 
 # How to Play
 ## Menu
-> Refer to the [menu images](#Menu)
+> Refer to the [menu images](#Menu-1)
 
 When the program begins, a menu screen will appear on the user's screen, which displays two buttons: a bigger one on the left that says `Play`, and a smaller one on the right of `Play` that shows an image of a snake. Clicking the smaller button that displays the snake image will alter the snake's speed. If the snake is green and blue, it will move at 10 frames per second, while if the snake is red and blue, it will move at 20 frames per second, and if the snake is a question mark, the speed will randomize between 10 and 20 frames per second (which changes every game).
 
